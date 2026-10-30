@@ -3,7 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test",
+    "typecheck": "tsc --noEmit",
+    "test:login": "playwright test tests/login.spec.ts tests/loginApi.spec.ts",
+    "test:login:browser": "playwright test tests/login.spec.ts",
+    "test:login:api": "playwright test tests/loginApi.spec.ts --project=api",
+    "test:login:ui": "playwright test tests/login.spec.ts --ui"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kainos-academy-2026-eayl/ctrl-alt-elite-test-harness.git"
@@ -17,6 +24,7 @@
   "homepage": "https://github.com/kainos-academy-2026-eayl/ctrl-alt-elite-test-harness#readme",
   "devDependencies": {
     "@playwright/test": "^1.64.1",
-    "@types/node": "^26.6.6"
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2"
   }
 }

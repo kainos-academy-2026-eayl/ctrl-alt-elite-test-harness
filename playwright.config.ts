@@ -1,12 +1,12 @@
+import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { loadEnvFile } from 'node:process';
 import { defineConfig, devices } from '@playwright/test';
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
+const envFile = resolve(__dirname, '.env');
+if (existsSync(envFile)) {
+  loadEnvFile(envFile);
+}
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -22,30 +22,37 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: [['list'], ['html', { open: 'never' }]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('')`. */
-    // baseURL: 'http://localhost:3000',
+    baseURL: process.env.BASE_URL || 'http://127.0.0.1:3000',
 
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    /* Login traces can expose credentials and session cookies. */
+    trace: 'off',
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
+      name: 'api',
+      testMatch: '**/loginApi.spec.ts',
+    },
+    {
       name: 'chromium',
+      testIgnore: '**/loginApi.spec.ts',
       use: { ...devices['Desktop Chrome'] },
     },
 
     {
       name: 'firefox',
+      testIgnore: '**/loginApi.spec.ts',
       use: { ...devices['Desktop Firefox'] },
     },
 
     {
       name: 'webkit',
+      testIgnore: '**/loginApi.spec.ts',
       use: { ...devices['Desktop Safari'] },
     },
 
