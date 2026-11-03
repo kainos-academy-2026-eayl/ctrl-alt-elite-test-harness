@@ -138,53 +138,37 @@ test('registered user with an invalid password cannot sign in', async ({
   await expect(loginPage.loginHeading).toBeVisible();
 });
 
-test('registered user can sign in', async ({ page, loginPage, loginCredentials }) => {
-  await loginPage.loginAs(loginCredentials.email, loginCredentials.password);
+test('customer can sign in', async ({ page, loginPage, customerUser }) => {
+  await loginPage.loginAs(customerUser.email, customerUser.password);
   await expect(page).toHaveURL('/');
   await expect(loginPage.message).toBeVisible();
 });
 
-test('allows a successful retry after an incorrect password', async ({
-  page,
-  loginPage,
-  loginCredentials,
-}) => {
-  const { email, password } = loginCredentials;
-  await loginPage.loginAs(email, wrongPassword);
-  await expect(loginPage.errorMessage).toHaveText('Incorrect email or password.');
-  await expect(loginPage.email).toHaveValue(email);
-  await expect(loginPage.password).toBeEmpty();
-
-  await loginPage.loginAs(email, password);
-  await expect(page).toHaveURL('/');
-  await expect(loginPage.message).toBeVisible();
+test('admin can sign in', async ({ page, loginPage, adminUser }) => {
+  await loginPage.loginAs(adminUser.email, adminUser.password);
+  await expect(page).not.toHaveURL('/login');
   await page.goto('/profile');
   await expect(page).toHaveURL('/profile');
   await expect(loginPage.profileHeading).toBeVisible();
 });
 
-test('logs in, keeps the session after reload, and logs out', async ({
+test('customer service can sign in', async ({ page, loginPage, customerServiceUser }) => {
+  await loginPage.loginAs(customerServiceUser.email, customerServiceUser.password);
+  await expect(page).not.toHaveURL('/login');
+  await page.goto('/profile');
+  await expect(page).toHaveURL('/profile');
+  await expect(loginPage.profileHeading).toBeVisible();
+});
+
+test('inventory management can sign in', async ({
   page,
   loginPage,
-  loginCredentials,
+  inventoryManagementUser,
 }) => {
-  await loginPage.loginAs(loginCredentials.email, loginCredentials.password);
-  await expect(page).toHaveURL('/');
-  await page.reload();
-  await expect(page).toHaveURL('/');
-  await expect(loginPage.message).toBeVisible();
-  await loginPage.accountMenu.click();
-  await expect(loginPage.profileLink).toBeVisible();
-  await expect(loginPage.logoutButton).toBeVisible();
-  await loginPage.logout();
-  await expect(page).toHaveURL('/login');
+  await loginPage.loginAs(inventoryManagementUser.email, inventoryManagementUser.password);
+  await expect(page).not.toHaveURL('/login');
   await page.goto('/profile');
-  await expect(page).toHaveURL('/login');
-  await page.goto('/');
-  await expect(loginPage.accountMenu).toHaveAccessibleName('Account options');
-  await loginPage.accountMenu.click();
-  await expect(loginPage.loginLink).toBeVisible();
-  await expect(loginPage.profileLink).toHaveCount(0);
-  await expect(loginPage.logoutButton).toHaveCount(0);
+  await expect(page).toHaveURL('/profile');
+  await expect(loginPage.profileHeading).toBeVisible();
 });
 

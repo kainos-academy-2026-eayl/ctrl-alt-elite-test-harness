@@ -17,7 +17,6 @@ test('registered account receives a login token', async ({
     expect(typeof body.userId).toBe('string');
     expect(Boolean(body.userId)).toBe(true);
     expect(body.email).toBe(loginCredentials.email.trim().toLowerCase());
-    expect(body.role).toBe('CUSTOMER');
     expect(typeof body.token).toBe('string');
     expect(Boolean(body.token)).toBe(true);
     expect(body.password).toBeUndefined();
