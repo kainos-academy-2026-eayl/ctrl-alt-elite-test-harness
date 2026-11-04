@@ -22,13 +22,13 @@ test('access Inventory as inventory management user', async ({ loginPage, page, 
     await expect(page).toHaveURL('http://127.0.0.1:3000/admin/stock');
 });
 
-test('access Inventory  search as inventory management user', async ({ loginPage, page, inventoryManagementUser }) => {
+test('access Inventory search as inventory management user', async ({ loginPage, page, inventoryManagementUser }) => {
     await loginPage.loginAs(inventoryManagementUser.email, inventoryManagementUser.password);
     await page.getByRole('link', { name: 'Inventory', exact: true }).click();
     await page.getByRole('searchbox', { name: 'Search by name' }).fill('baseball cap');
     await expect(page.getByRole('cell', { name: 'Baseball Cap', exact: true })).toBeVisible();
 });
-test('access Inventory  and edit product and update stock', async ({ loginPage, page, inventoryManagementUser }) => {
+test('access Inventory and edit product and update stock', async ({ loginPage, page, inventoryManagementUser }) => {
     await loginPage.loginAs(inventoryManagementUser.email, inventoryManagementUser.password);
     await page.getByRole('link', { name: 'Inventory', exact: true }).click();
     await page.getByRole('searchbox', { name: 'Search by name' }).fill('baseball cap');
