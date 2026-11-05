@@ -1,4 +1,6 @@
 import { test as base } from '@playwright/test';
+import { AdminOrdersApi } from '../pages/AdminOrdersApi';
+import { AdminPortalPage } from '../pages/AdminPortalPage';
 import { LoginPage } from '../pages/LoginPage';
 import { LoginAPI } from '../pages/loginApi';
 
@@ -10,6 +12,8 @@ type LoginCredentials = {
 type LoginFixtures = {
     loginPage: LoginPage;
     loginApi: LoginAPI;
+    adminOrdersApi: AdminOrdersApi;
+    adminPortal: AdminPortalPage;
     loginEmail: string;
     loginCredentials: LoginCredentials;
     customerUser: LoginCredentials;
@@ -36,6 +40,14 @@ export const test = base.extend<LoginFixtures>({
 
     loginApi: async ({ request }, use) => {
         await use(new LoginAPI(request));
+    },
+
+    adminOrdersApi: async ({ request }, use) => {
+        await use(new AdminOrdersApi(request));
+    },
+
+    adminPortal: async ({ page }, use) => {
+        await use(new AdminPortalPage(page));
     },
 
     loginEmail: async ({ }, use) => {

@@ -8,6 +8,9 @@ if (existsSync(envFile)) {
   loadEnvFile(envFile);
 }
 
+/** Specs that only call the backend API and need no browser. */
+const apiSpecs = ['**/loginApi.spec.ts', '**/adminOrdersApi.spec.ts'];
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -36,23 +39,23 @@ export default defineConfig({
   projects: [
     {
       name: 'api',
-      testMatch: '**/loginApi.spec.ts',
+      testMatch: apiSpecs,
     },
     {
       name: 'chromium',
-      testIgnore: '**/loginApi.spec.ts',
+      testIgnore: apiSpecs,
       use: { ...devices['Desktop Chrome'] },
     },
 
     {
       name: 'firefox',
-      testIgnore: '**/loginApi.spec.ts',
+      testIgnore: apiSpecs,
       use: { ...devices['Desktop Firefox'] },
     },
 
     {
       name: 'webkit',
-      testIgnore: '**/loginApi.spec.ts',
+      testIgnore: apiSpecs,
       use: { ...devices['Desktop Safari'] },
     },
 
