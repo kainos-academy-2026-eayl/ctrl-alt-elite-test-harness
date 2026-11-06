@@ -9,7 +9,10 @@
     "test:login": "playwright test tests/login.spec.ts tests/loginApi.spec.ts",
     "test:login:browser": "playwright test tests/login.spec.ts",
     "test:login:api": "playwright test tests/loginApi.spec.ts --project=api",
-    "test:login:ui": "playwright test tests/login.spec.ts --ui"
+    "test:login:ui": "playwright test tests/login.spec.ts --ui",
+    "test:orders": "playwright test tests/adminOrders.spec.ts tests/adminOrdersApi.spec.ts",
+    "test:orders:browser": "playwright test tests/adminOrders.spec.ts",
+    "test:orders:api": "playwright test tests/adminOrdersApi.spec.ts --project=api"
   },
   "repository": {
     "type": "git",

@@ -9,6 +9,10 @@
     `customerServiceUser`, and `inventoryManagementUser` fixtures, plus `test` and `expect`.
 - [tests/login.spec.ts](tests/login.spec.ts): browser login and session tests.
 - [tests/loginApi.spec.ts](tests/loginApi.spec.ts): backend login response tests.
+- [pages/AdminOrdersApi.ts](pages/AdminOrdersApi.ts): logs in through the API and calls the admin orders and sales report endpoints.
+- [pages/AdminPortalPage.ts](pages/AdminPortalPage.ts): locators for the admin Orders, Reports and Dashboard pages.
+- [tests/adminOrdersApi.spec.ts](tests/adminOrdersApi.spec.ts): API tests for `/api/admin/orders` and `/api/admin/reports/sales`.
+- [tests/adminOrders.spec.ts](tests/adminOrders.spec.ts): browser tests for the admin Orders, Reports and Dashboard pages.
 
 Browser tests run in Chromium, Firefox, and WebKit, each with a fresh context.
 API tests run once in the `api` project and do not launch a browser.
@@ -78,7 +82,35 @@ npx playwright show-report
 `test:login` runs all login tests: API checks once and browser checks in all three
 browsers. `test:login:ui` opens Playwright's interactive test runner.
 
+Admin orders and reports tests:
+
+```sh
+npm run test:orders
+npm run test:orders:api
+npm run test:orders:browser -- --project=chromium
+```
+
 ## Coverage
+
+### Admin orders and reports
+
+These 10 tests need the `ADMIN`, `CUSTOMER_SERVICE` and `CUSTOMER` accounts from
+`.env`. They read the existing data and do not create orders, so they pass
+whether or not any orders exist.
+
+API tests (4, `api` project): requests without a valid token get 401 on every
+endpoint; customers get 403, customer service can read orders but not reports,
+and admins can read both; the order list returns the documented fields, pages
+correctly, returns an empty page with real totals past the end, and the order
+detail leaks no credentials; invalid query values, invalid report ranges, a
+non-UUID order id (400) and an unknown order id (404) return a `message`.
+
+Browser tests (6): the admin Orders page shows a total; filtering by status;
+the empty state and "Clear filters" for a search with no matches; running a
+sales report for a date range; customer service sees Orders but no Reports link
+and is denied the Reports page; the dashboard Orders card matches the API total.
+
+### Login
 
 Browser tests check accessible form fields, password masking/show/hide, native
 input validation, unknown accounts, incorrect passwords, successful login,
