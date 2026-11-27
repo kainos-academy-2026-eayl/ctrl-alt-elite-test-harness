@@ -30,7 +30,9 @@ export class LoginPage {
             name: 'My Profile',
             exact: true,
         });
-        this.loginLink = page.getByRole('link', { name: 'Login', exact: true });
+        this.loginLink = page
+            .getByRole('navigation', { name: 'Main navigation' })
+            .getByRole('link', { name: 'Login', exact: true });
         this.profileLink = page.getByRole('link', { name: 'My Profile', exact: true });
         this.passwordToggle = page.getByRole('button', {
             name: /^(Show|Hide) password$/,
