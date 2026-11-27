@@ -23,14 +23,16 @@ export class LoginPage {
         this.errorMessage = page.getByRole('alert');
         this.loginHeading = page.getByRole('heading', { name: 'Log in', exact: true });
         this.message = page.getByRole('heading', {
-            name: 'Find your next favourite.',
+            name: 'Log off. Get dressed.',
             exact: true,
         });
         this.profileHeading = page.getByRole('heading', {
             name: 'My Profile',
             exact: true,
         });
-        this.loginLink = page.getByRole('link', { name: 'Login', exact: true });
+        this.loginLink = page
+            .getByRole('navigation', { name: 'Main navigation' })
+            .getByRole('link', { name: 'Login', exact: true });
         this.profileLink = page.getByRole('link', { name: 'My Profile', exact: true });
         this.passwordToggle = page.getByRole('button', {
             name: /^(Show|Hide) password$/,
