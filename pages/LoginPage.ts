@@ -23,7 +23,7 @@ export class LoginPage {
         this.errorMessage = page.getByRole('alert');
         this.loginHeading = page.getByRole('heading', { name: 'Log in', exact: true });
         this.message = page.getByRole('heading', {
-            name: 'Find your next favourite.',
+            name: 'Log off. Get dressed.',
             exact: true,
         });
         this.profileHeading = page.getByRole('heading', {
